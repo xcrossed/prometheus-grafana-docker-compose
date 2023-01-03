@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 
 networks:
   monitoring:
@@ -50,9 +50,9 @@ services:
     restart: unless-stopped
     volumes:
       - ./grafana/data:/var/lib/grafana
-      - ../grafana/conf/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/conf/grafana.ini:/etc/grafana/grafana.ini
       - ./grafana/dashboards:/etc/grafana/dashboards
-      - ./provisioning /etc/grafana/provisioning
+      - ./grafana/provisioning /etc/grafana/provisioning
     expose:
       - 3000
     networks:
