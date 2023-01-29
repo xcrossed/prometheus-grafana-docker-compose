@@ -1,5 +1,4 @@
 version: '3.3'
-
 networks:
   monitoring:
     driver: bridge
@@ -23,12 +22,15 @@ services:
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     expose:
       - 9100
+    ports:
+      - 9100:9100
     networks:
       - monitoring
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     restart: unless-stopped
+    user: "1000:1000"
     volumes:
       - ./prometheus/conf/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus/data:/prometheus
@@ -40,6 +42,8 @@ services:
       - '--web.enable-lifecycle'
     expose:
       - 9090
+    ports:
+      - 9090:9090
     networks:
       - monitoring
   grafana:
@@ -47,12 +51,13 @@ services:
     container_name: grafana
     ports:
       - 3000:3000
+    user: '104'
     restart: unless-stopped
-    volumes:
-      - ./grafana/data:/var/lib/grafana
-      - ./grafana/conf/grafana.ini:/etc/grafana/grafana.ini
-      - ./grafana/dashboards:/etc/grafana/dashboards
-      - ./grafana/provisioning /etc/grafana/provisioning
+    # volumes:
+    #   - ./grafana/data:/var/lib/grafana
+    #   - ./grafana/conf/grafana.ini:/etc/grafana/grafana.ini
+    #   - ./grafana/dashboards:/etc/grafana/dashboards
+    #   - ./grafana/provisioning /etc/grafana/provisioning
     expose:
       - 3000
     networks:
