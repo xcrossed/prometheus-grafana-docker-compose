@@ -1,0 +1,1 @@
+use celery & fastapi & redis 
